@@ -19,7 +19,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Mappers
             //Asert
             logDto.Should().NotBeNull();
 
-            log.Should().BeEquivalentTo(logDto, options =>
+            log.ShouldBeEquivalentTo(logDto, options =>
                 options.Excluding(o => o.PropertiesXml));
         }
 
@@ -34,7 +34,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Mappers
 
             log.Should().NotBeNull();
 
-            log.Should().BeEquivalentTo(logDto, options =>
+            log.ShouldBeEquivalentTo(logDto, options =>
                 options.Excluding(o => o.PropertiesXml));
         }
     }

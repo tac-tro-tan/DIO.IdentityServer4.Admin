@@ -72,12 +72,11 @@ namespace SkorubaIdentityServer4Admin.STS.Identity
 
             app.UsePathBase(Configuration.GetValue<string>("BasePath"));
 
-            app.UseStaticFiles();
-            UseAuthentication(app);
-
             // Add custom security headers
             app.UseSecurityHeaders(Configuration);
 
+            app.UseStaticFiles();
+            UseAuthentication(app);
             app.UseMvcLocalizationServices();
 
             app.UseRouting();

@@ -47,7 +47,7 @@ namespace Skoruba.IdentityServer4.Admin.Api
 
             if (isDevelopment)
             {
-                configurationBuilder.AddUserSecrets<Startup>(true);
+                configurationBuilder.AddUserSecrets<Startup>();
             }
 
             var configuration = configurationBuilder.Build();
@@ -74,7 +74,7 @@ namespace Skoruba.IdentityServer4.Admin.Api
 
                      if (env.IsDevelopment())
                      {
-                         configApp.AddUserSecrets<Startup>(true);
+                         configApp.AddUserSecrets<Startup>();
                      }
 
                      configurationRoot.AddAzureKeyVaultConfiguration(configApp);

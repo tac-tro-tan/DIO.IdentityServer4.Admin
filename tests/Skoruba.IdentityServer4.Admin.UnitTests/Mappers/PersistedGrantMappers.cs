@@ -22,7 +22,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Mappers
             //Asert
             persistedGrantDto.Should().NotBeNull();
 
-            persistedGrant.Should().BeEquivalentTo(persistedGrantDto, options => options.Excluding(x => x.SubjectName));
+            persistedGrant.ShouldBeEquivalentTo(persistedGrantDto);
         }
     }
 }

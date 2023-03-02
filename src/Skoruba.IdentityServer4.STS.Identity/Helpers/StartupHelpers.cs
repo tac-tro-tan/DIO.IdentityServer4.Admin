@@ -19,7 +19,6 @@ using Skoruba.IdentityServer4.STS.Identity.Configuration.Constants;
 using Skoruba.IdentityServer4.STS.Identity.Configuration.Interfaces;
 using Skoruba.IdentityServer4.STS.Identity.Helpers.Localization;
 using System.Linq;
-using IdentityServer4.Configuration;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Interfaces;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Helpers;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
@@ -115,13 +114,10 @@ namespace Skoruba.IdentityServer4.STS.Identity.Helpers
             {
                 app.UseCsp(csp =>
                 {
-                    var imagesSources = new List<string> { "data:" };
-                    imagesSources.AddRange(cspTrustedDomains);
-
                     csp.ImageSources(options =>
                     {
                         options.SelfSrc = true;
-                        options.CustomSources = imagesSources;
+                        options.CustomSources = cspTrustedDomains;
                         options.Enabled = true;
                     });
                     csp.FontSources(options =>
@@ -144,35 +140,11 @@ namespace Skoruba.IdentityServer4.STS.Identity.Helpers
                         options.Enabled = true;
                         options.UnsafeInlineSrc = true;
                     });
-                    csp.Sandbox(options =>
-                    {
-                        options.AllowForms()
-                            .AllowSameOrigin()
-                            .AllowScripts();
-                    });
-                    csp.FrameAncestors(option =>
-                    {
-                        option.NoneSrc = true;
-                        option.Enabled = true;
-                    });
-
-                    csp.BaseUris(options =>
-                    {
-                        options.SelfSrc = true;
-                        options.Enabled = true;
-                    });
-
-                    csp.ObjectSources(options =>
-                    {
-                        options.NoneSrc = true;
-                        options.Enabled = true;
-                    });
-
                     csp.DefaultSources(options =>
                     {
-                        options.Enabled = true;
                         options.SelfSrc = true;
                         options.CustomSources = cspTrustedDomains;
+                        options.Enabled = true;
                     });
                 });
             }
@@ -353,9 +325,20 @@ namespace Skoruba.IdentityServer4.STS.Identity.Helpers
             where TConfigurationDbContext : DbContext, IAdminConfigurationDbContext
             where TUserIdentity : class
         {
-            var configurationSection = configuration.GetSection(nameof(IdentityServerOptions));
+            var advancedConfiguration = configuration.GetSection(nameof(AdvancedConfiguration)).Get<AdvancedConfiguration>();
 
-            var builder = services.AddIdentityServer(options => configurationSection.Bind(options))
+            var builder = services.AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                    
+                    if (!string.IsNullOrEmpty(advancedConfiguration.IssuerUri))
+                    {
+                        options.IssuerUri = advancedConfiguration.IssuerUri;
+                    }
+                })
                 .AddConfigurationStore<TConfigurationDbContext>()
                 .AddOperationalStore<TPersistedGrantDbContext>()
                 .AddAspNetIdentity<TUserIdentity>();
@@ -398,7 +381,7 @@ namespace Skoruba.IdentityServer4.STS.Identity.Helpers
                     options.Instance = externalProviderConfiguration.AzureInstance;
                     options.Domain = externalProviderConfiguration.AzureDomain;
                     options.CallbackPath = externalProviderConfiguration.AzureAdCallbackPath;
-                },  cookieScheme: null);
+                });
             }
         }
 

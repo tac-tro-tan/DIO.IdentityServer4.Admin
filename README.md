@@ -10,13 +10,11 @@
 [![Build Status](https://dev.azure.com/skoruba/IdentityServer4.Admin/_apis/build/status/IdentityServer4.Admin-CI?branchName=master)](https://dev.azure.com/skoruba/IdentityServer4.Admin/_build/latest?definitionId=2?branchName=master)
 [![Join the chat at https://gitter.im/skoruba/IdentityServer4.Admin](https://badges.gitter.im/skoruba/IdentityServer4.Admin.svg)](https://gitter.im/skoruba/IdentityServer4.Admin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-The application is written in the **Asp.Net Core MVC - using .NET 6**
-
-## 🎉  New version of Duende IdentityServer Admin UI available [here](https://github.com/skoruba/Duende.IdentityServer.Admin) ⚡
+The application is written in the **Asp.Net Core MVC - using .NET 5**
 
 ## Requirements
 
-- [Install](https://www.microsoft.com/net/download/windows#/current) the latest .NET 6 SDK (using older versions may lead to 502.5 errors when hosted on IIS or application exiting immediately after starting when self-hosted)
+- [Install](https://www.microsoft.com/net/download/windows#/current) the latest .NET 5 SDK (using older versions may lead to 502.5 errors when hosted on IIS or application exiting immediately after starting when self-hosted)
 
 ## Installation via dotnet new template
 
@@ -27,7 +25,7 @@ The application is written in the **Asp.Net Core MVC - using .NET 6**
 - 🔒 **NOTE:** This version affects your database data if you use the default database migrations that are part of the project - double check the migrations according to your database provider and create a database backup
 
 ```sh
-dotnet new -i Skoruba.IdentityServer4.Admin.Templates::2.1.0
+dotnet new -i Skoruba.IdentityServer4.Admin.Templates::2.0.1
 ```
 
 ### Create new project:
@@ -168,6 +166,12 @@ docker-compose up -d
 
 ### Docker images
 - Docker images will be available also in [docker hub](https://hub.docker.com/u/skoruba)
+  - AdminUI:    
+    - `skoruba/identityserver4-admin:2.0.1`
+  - Admin Api:
+    - `skoruba/identityserver4-admin-api:2.0.1`
+  - STS:
+    - `skoruba/identityserver4-sts-identity:2.0.1`
        
 ### Publish Docker images to Docker hub
 - Check the script in `build/publish-docker-images.ps1` - change the profile name according to your requirements.
@@ -201,7 +205,7 @@ The following Gulp commands are available:
   - `AdminLogDbContext`: for logging
   - `IdentityServerConfigurationDbContext`: for IdentityServer configuration store
   - `IdentityServerPersistedGrantDbContext`: for IdentityServer operational store
-  - `AdminAuditLogDbContext`: for Audit Logging
+  - `AuditLoggingDbContext`: for Audit Logging
   - `IdentityServerDataProtectionDbContext`: for dataprotection
 
 ### Run entity framework migrations:
@@ -387,7 +391,7 @@ By default, configuration value is null to use default theme. if you want to use
 
 You can also use your custom theme by integrating it in your project or hosting css on your place to pass the url in `CustomThemeCss` key. (Note that custom theme override standard theme)
 
-- Important Note: Theme can use external resources which caused errors due to CSP. If you get errors, please make sure that you configured correctly CSP section in your `appsettings.json` with thrusted domains for resources.
+- Important Note: Theme can use external ressources which caused errors due to CSP. If you get errors, please make sure that you configured correctly CSP section in your `appsettings.json` with thrusted domains for ressources.
 
 ```json
   "AdminConfiguration": {
@@ -526,7 +530,7 @@ In STS project - in `appsettings.json`:
 
 ## CSP - Content Security Policy
 
-- If you want to use favicon or logo not included/hosted on the same place, you need to declare trusted domain where resources are hosted in appsettings.json.
+- If you want to use favicon or logo not included/hosted on the same place, you need to declare trusted domain where ressources are hosted in appsettings.json.
 
 ```
   "CspTrustedDomains": [
